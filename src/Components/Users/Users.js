@@ -1,4 +1,7 @@
 import React, { useEffect, useState } from "react";
+import { Col, Row } from "react-bootstrap";
+import { Link } from "react-router-dom";
+import "./Users.css";
 
 const allDataUrl = [
   "data/10780.json",
@@ -22,10 +25,9 @@ const allDataUrl = [
   "data/38639.json",
   "data/7.json",
 ];
-const Users = () => {
+const Users = ({ startDate, endDate, userStatus, handleShow }) => {
   const [usersData, setUsersData] = useState([]);
-  const [startDate, setStartDate] = useState("2016-07-11");
-  const [endDate, setEndDate] = useState("2016-07-29");
+  const [findUser, setFindUser] = useState([]);
   // get all user data and put a state
   const getAllData = async (dataUrl) => {
     const users = [];
@@ -42,12 +44,12 @@ const Users = () => {
 
   //   find user information by specific date
 
-  // var startDate = new Date("2016-07-11");
-  // var endDate = new Date("2016-07-29");
+  var fromDate = new Date(startDate);
+  var toDate = new Date(endDate);
 
-  let loop = new Date(startDate);
+  let loop = new Date(fromDate);
   const dates = [];
-  while (loop <= endDate) {
+  while (loop <= toDate) {
     let year = loop.getFullYear();
     let month = loop.getMonth() + 1;
     let dt = loop.getDate();
@@ -62,7 +64,6 @@ const Users = () => {
     let newDate = loop.setDate(loop.getDate() + 1);
     loop = new Date(newDate);
   }
-  console.log(dates);
 
   // filter user number of orders
   const userFilter = () => {
@@ -81,7 +82,6 @@ const Users = () => {
           }
         }
       }
-      console.log(count);
       if (count >= 10) {
         superActive.push(user);
       }
@@ -92,13 +92,80 @@ const Users = () => {
         bored.push(user);
       }
     }
-    // console.log(superActive, active, bored);
     return [superActive, active, bored];
   };
   const user = userFilter();
-  console.log(user);
-  // console.log(usersData);
-  return <div></div>;
+
+  let renderUser = [];
+  let text = "";
+  if (userStatus === "super-active") {
+    renderUser = user[0];
+    text = "Super";
+  } else if (userStatus === "active") {
+    renderUser = user[1];
+    text = "Active";
+  } else if (userStatus === "bored") {
+    renderUser = user[2];
+    text = "Bored";
+  } else {
+    renderUser = [];
+  }
+  let showUser = [];
+  const handleSearch = (e) => {
+    const searchUser = renderUser.filter((user) =>
+      user.profile.name.toLowerCase().includes(e.target.value.toLowerCase())
+    );
+    setFindUser(searchUser);
+  };
+  if (findUser.length) {
+    showUser = findUser;
+  } else {
+    showUser = renderUser;
+  }
+
+  return (
+    <>
+      <div className="user-nav">
+        <Link to="/">
+          <i className="ms-4 mt-3 fas fa-arrow-left"></i>
+        </Link>
+      </div>
+      <div className="p-2 p-md-4">
+        <div className="ms-3 d-flex justify-content-between">
+          <p>Show {text} user</p>
+          <div onClick={handleShow} className="d-flex filter me-3">
+            <p className="me-1 me-md-2">Edit filter</p>
+            <i className="fas fa-filter mt-1"></i>
+          </div>
+        </div>
+        <div className="text-center mx-4">
+          <div className="input-group mb-3">
+            <span className="input-group-text" id="basic-addon1">
+              <i className="fas fa-search"></i>
+            </span>
+            <input
+              type="text"
+              className="form-control"
+              placeholder="Search by Name"
+              onChange={handleSearch}
+              aria-describedby="basic-addon1"
+            />
+          </div>
+        </div>
+        <Row>
+          {!renderUser.length && <h1>{text} user is empty</h1>}
+          {showUser.map((user, index) => (
+            <Col xs={6} key={index}>
+              <div className="user-card">
+                <img className="w-100" src={user.profile.pictureUrl} alt="" />
+                <h3 className="user-name mt-sm-3 m-1">{user.profile.name}</h3>
+              </div>
+            </Col>
+          ))}
+        </Row>
+      </div>
+    </>
+  );
 };
 
 export default Users;

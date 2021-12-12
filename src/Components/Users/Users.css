@@ -1,0 +1,37 @@
+.user-card {
+  border: 1px solid lightgray;
+  border-radius: 5px;
+  margin: 20px;
+  padding: 20px;
+  box-shadow: 10px 10px 20px wheat;
+}
+.user-nav {
+  height: 50px;
+  background-color: turquoise;
+}
+.filter {
+  cursor: pointer;
+}
+.input-group-text {
+  background-color: transparent;
+}
+@media only screen and (max-width: 480px) {
+  .user-card {
+    margin: 5px;
+    padding: 5px;
+    height: 200px;
+  }
+  .user-name {
+    font-size: 20px;
+  }
+}
+@media only screen and (max-width: 300px) {
+  .user-card {
+    margin: 5px;
+    padding: 5px;
+    height: 140px;
+  }
+  .user-name {
+    font-size: 15px;
+  }
+}

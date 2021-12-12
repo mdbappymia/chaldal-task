@@ -1,0 +1,19 @@
+.user-analyzer-container {
+  width: 50%;
+  margin: auto;
+}
+.user-analyzer-head {
+  height: 50px;
+  background-color: rgb(8, 221, 236);
+}
+.user-analyzer-form {
+  border: 2px solid rgb(8, 221, 236);
+  padding: 15px;
+  border-radius: 5px;
+}
+
+@media only screen and (max-width: 666px) {
+  .user-analyzer-container {
+    width: 90%;
+  }
+}
