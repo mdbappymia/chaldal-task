@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Col, Row } from "react-bootstrap";
+import { Col, Row, Spinner } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import "./Users.css";
 
@@ -28,15 +28,18 @@ const allDataUrl = [
 const Users = ({ startDate, endDate, userStatus, handleShow }) => {
   const [usersData, setUsersData] = useState([]);
   const [findUser, setFindUser] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
   // get all user data and put a state
   const getAllData = async (dataUrl) => {
     const users = [];
+    setIsLoading(true);
     for (let dataUrl of allDataUrl) {
       const res = await fetch(dataUrl);
       const data = await res.json();
       users.push(data);
     }
     setUsersData(users);
+    setIsLoading(false);
   };
   useEffect(() => {
     getAllData(allDataUrl);
@@ -153,7 +156,14 @@ const Users = ({ startDate, endDate, userStatus, handleShow }) => {
           </div>
         </div>
         <Row>
-          {!renderUser.length && <h1>{text} user is empty</h1>}
+          {isLoading && (
+            <div className="text-center my-5">
+              <Spinner animation="border" />
+            </div>
+          )}
+          {!renderUser.length && !isLoading && (
+            <h1 className="text-center my-5">{text} user is empty</h1>
+          )}
           {showUser.map((user, index) => (
             <Col xs={6} key={index}>
               <div className="user-card">

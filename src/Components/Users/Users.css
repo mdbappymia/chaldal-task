@@ -19,19 +19,19 @@
   .user-card {
     margin: 5px;
     padding: 5px;
-    height: 200px;
+    height: 230px;
   }
   .user-name {
     font-size: 20px;
   }
 }
-@media only screen and (max-width: 300px) {
+@media only screen and (max-width: 320px) {
   .user-card {
     margin: 5px;
     padding: 5px;
-    height: 140px;
+    height: 150px;
   }
   .user-name {
-    font-size: 15px;
+    font-size: 13px;
   }
 }
